@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mastermind - Le défi</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="carte">
+    <h1>MASTERMIND <span>le défi</span></h1>
+
+    <!-- ===== MENU ===== -->
+    <section id="ecran-menu">
+      <label for="prenom1">Ton prénom</label>
+      <input type="text" id="prenom1" maxlength="20" placeholder="Joueur 1" autocomplete="off">
+
+      <label for="prenom2">Prénom du 2e joueur <small>(mode 2 joueurs)</small></label>
+      <input type="text" id="prenom 2" maxlength="20" placeholder="Joueur 2" autocomplete="off">
+
+      <fieldset>
+        <legend>Niveau</legend>
+        <label class="radio"><input type="radio" name="niveau" value="facile"> Facile <small>6 couleurs, 4 pions, 12 essais</small></label>
+        <label class="radio"><input type="radio" name="niveau" value="normal" checked> Normal <small>6 couleurs, 4 pions, 10 essais</small></label>
+        <label class="radio"><input type="radio" name="niveau" value="difficile"> Difficile <small>8 couleurs, 5 pions, 10 essais</small></label>
+      </fieldset>
+
+      <div class="modes">
+        <button type="button" data-mode="solo">Jouer seul</button>
+        <button type="button" data-mode="deux">Mode 2 joueurs</button>
+        <button type="button" data-mode="ordi">L'ordinateur devine mon code</button>
+        <button type="button" id="btn-scores" class="secondaire">Meilleurs scores</button>
+      </div>
+
+      <h2>Les règles</h2>
+      <ul class="regles">
+        <li>Trouve la combinaison secrète de pions colorés. Une couleur peut apparaître plusieurs fois.</li>
+        <li>Après chaque essai : <span class="badge bien">n</span> pions de la bonne couleur <strong>bien placés</strong>
+            et <span class="badge mal">n</span> pions de la bonne couleur <strong>mal placés</strong>.</li>
+        <li>Au clavier : touches 1 à 8 pour poser un pion, Retour arrière pour en retirer un, Entrée pour valider.</li>
+      </ul>
+    </section>
+
+    <!-- ===== JEU ===== -->
+    <section id="ecran-jeu" hidden>
+      <div class="barre">
+        <button type="button" id="btn-menu" class="secondaire petit">&larr; Menu</button>
+        <span id="compteur"></span>
+      </div>
+      <p id="consigne"></p>
+
+      <div id="plateau" aria-live="polite"></div>
+
+      <!-- Saisie d'un code (solo, 2 joueurs) -->
+      <div id="zone-saisie">
+        <div id="slots" class="slots"></div>
+        <div id="palette" class="palette"></div>
+        <div class="actions">
+          <button type="button" id="btn-effacer" class="secondaire">Effacer</button>
+          <button type="button" id="btn-valider">Valider</button>
+        </div>
+      </div>
+
+      <!-- Retour d'indices (l'ordinateur devine) -->
+      <div id="zone-retour" hidden>
+        <div id="slots-ordi" class="slots"></div>
+        <div class="retour">
+          <label>Bien placés
+            <input type="number" id="in-bien" min="0" value="0">
+          </label>
+          <label>Mal placés
+            <input type="number" id="in-mal" min="0" value="0">
+          </label>
+        </div>
+        <div class="actions">
+          <button type="button" id="btn-envoyer">Envoyer les indices</button>
+        </div>
+      </div>
+
+      <p id="message" role="alert"></p>
+
+      <div id="fin" hidden>
+        <p id="texte-fin"></p>
+        <div id="secret-fin" class="slots"></div>
+        <div class="actions">
+          <button type="button" id="btn-rejouer">Rejouer</button>
+          <button type="button" id="btn-menu-fin" class="secondaire">Menu</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SCORES ===== -->
+    <section id="ecran-scores" hidden>
+      <div class="barre">
+        <button type="button" id="btn-retour-scores" class="secondaire petit">&larr; Menu</button>
+      </div>
+      <h2>Meilleurs scores</h2>
+      <div id="liste-scores"></div>
+      <button type="button" id="btn-reset-scores" class="secondaire petit">Effacer les scores</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
