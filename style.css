@@ -1,14 +1,24 @@
+/* =====================================================
+   MASTERMIND - thème clair
+   Mobile d'abord, mise en page ordinateur à partir de 900px
+   ===================================================== */
+
 :root {
-  --fond: #14161f;
-  --carte: #1e2130;
-  --champ: #151827;
-  --bord: #333857;
-  --texte: #eef0f7;
-  --discret: #9aa0b8;
-  --accent: #6c8cff;
-  --bien: #3ecf8e;
+  color-scheme: light;
+  --fond: #f3f6fc;
+  --carte: #ffffff;
+  --champ: #f6f8fd;
+  --panneau: #eef2fb;
+  --bord: #d6dcec;
+  --texte: #1c2340;
+  --discret: #5d6787;
+  --accent: #3b5bdb;
+  --accent-fonce: #2f4ac0;
+  --accent-pale: #e6ebfa;
+  --bien: #2fbf84;
   --mal: #ffb454;
-  --erreur: #ff6b6b;
+  --erreur: #c92a2a;
+  --ombre: 0 8px 28px rgba(40, 60, 120, .12);
 }
 
 * { box-sizing: border-box; }
@@ -22,22 +32,35 @@ body {
   padding: 24px 16px;
   background: var(--fond);
   color: var(--texte);
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
 }
 
 .carte {
   width: 100%;
-  max-width: 540px;
+  max-width: 560px;
   background: var(--carte);
-  border-radius: 16px;
-  padding: 28px 24px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+  border: 1px solid var(--bord);
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: var(--ombre);
 }
 
-h1 { margin: 0 0 18px; font-size: 1.6rem; letter-spacing: .08em; }
-h1 span { color: var(--accent); font-weight: 400; font-size: 1rem; letter-spacing: 0; }
-h2 { font-size: 1.05rem; margin: 22px 0 8px; }
+/* ----- En-tête avec logo ----- */
+.entete {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.logo { flex: none; width: 56px; height: 56px; border-radius: 14px; }
+h1 { margin: 0; font-size: 1.5rem; letter-spacing: .08em; line-height: 1.2; }
+h1 span { color: var(--accent); font-weight: 500; font-size: 1rem; letter-spacing: 0; }
+.slogan { margin: 2px 0 0; color: var(--discret); font-size: .92rem; }
 
+h2 { font-size: 1.05rem; margin: 0 0 8px; }
+
+/* ----- Formulaires ----- */
 label { display: block; margin: 12px 0 6px; color: var(--discret); }
 small { color: var(--discret); font-weight: 400; }
 
@@ -50,7 +73,11 @@ input[type="text"], input[type="number"] {
   color: var(--texte);
   font-size: 1.05rem;
 }
-input:focus { outline: none; border-color: var(--accent); }
+input[type="text"]:focus, input[type="number"]:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: #fff;
+}
 
 fieldset {
   margin: 18px 0 6px;
@@ -59,9 +86,10 @@ fieldset {
   padding: 6px 14px 10px;
 }
 legend { color: var(--discret); padding: 0 6px; }
-label.radio { display: flex; gap: 8px; align-items: center; margin: 8px 0; color: var(--texte); cursor: pointer; }
-label.radio small { margin-left: 4px; }
+label.radio { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; margin: 8px 0; color: var(--texte); cursor: pointer; }
+label.radio input { accent-color: var(--accent); }
 
+/* ----- Boutons ----- */
 button {
   padding: 12px 20px;
   border: none;
@@ -71,19 +99,59 @@ button {
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
+  transition: background .15s, transform .1s;
 }
-button:hover { filter: brightness(1.12); }
+button:hover { background: var(--accent-fonce); }
+button:active { transform: translateY(1px); }
 button:disabled { opacity: .5; cursor: not-allowed; }
-button.secondaire { background: #2c3050; color: var(--texte); }
+button.secondaire { background: var(--accent-pale); color: #24307a; }
+button.secondaire:hover { background: #d8e0f7; }
 button.petit { padding: 7px 12px; font-size: .9rem; }
 
-.modes { display: grid; gap: 10px; margin-top: 16px; }
+:focus-visible { outline: 3px solid #8da2f2; outline-offset: 2px; }
 
-.regles { padding-left: 20px; line-height: 1.7; color: var(--discret); }
+/* ----- Choix du mode ----- */
+.menu-modes { margin-top: 18px; }
+.titre-modes { color: var(--discret); font-size: .95rem; font-weight: 600; }
+.modes { display: grid; gap: 10px; }
+button.mode {
+  display: grid;
+  gap: 2px;
+  padding: 14px 18px;
+  text-align: left;
+  line-height: 1.35;
+}
+button.mode strong { font-size: 1.05rem; }
+button.mode span { font-size: .88rem; font-weight: 400; opacity: .9; }
+.btn-scores { width: 100%; margin-top: 10px; }
+
+kbd {
+  display: inline-block;
+  min-width: 1.6em;
+  padding: 1px 6px;
+  border: 1px solid var(--bord);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: var(--carte);
+  color: var(--texte);
+  font: inherit;
+  font-size: .8rem;
+  text-align: center;
+}
+
+/* ----- Règles ----- */
+.menu-regles {
+  margin-top: 22px;
+  padding: 16px 18px;
+  background: var(--panneau);
+  border-radius: 12px;
+}
+.regles { margin: 0; padding-left: 20px; line-height: 1.7; color: var(--discret); }
 .regles strong { color: var(--texte); }
 
+/* ----- Jeu ----- */
 .barre { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 8px; }
-#compteur { color: var(--discret); }
+#compteur { color: var(--discret); font-weight: 600; }
 #consigne { margin: 8px 0 14px; }
 
 /* Pions */
@@ -96,8 +164,8 @@ button.petit { padding: 7px 12px; font-size: .9rem; }
   font-weight: 700;
   font-size: .95rem;
   color: #fff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, .55);
-  box-shadow: inset 0 -3px 6px rgba(0, 0, 0, .25), inset 0 2px 4px rgba(255, 255, 255, .25);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .45);
+  box-shadow: inset 0 -3px 6px rgba(0, 0, 0, .18), inset 0 2px 4px rgba(255, 255, 255, .35), 0 1px 2px rgba(20, 30, 70, .2);
 }
 .pion.sombre { color: #222; text-shadow: none; }
 
@@ -110,24 +178,62 @@ button.petit { padding: 7px 12px; font-size: .9rem; }
   border-radius: 50%;
   font-weight: 700;
   font-size: .85rem;
-  color: #14161f;
+  color: #14281f;
 }
 .badge.bien { background: var(--bien); }
-.badge.mal { background: var(--mal); }
+.badge.mal { background: var(--mal); color: #3a2300; }
 
 /* Historique */
+.legende {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 0 0 10px;
+  color: var(--discret);
+  font-size: .9rem;
+}
+.legende .badge { min-width: 22px; height: 22px; font-size: .75rem; margin-right: 4px; }
+
 #plateau { display: grid; gap: 8px; margin-bottom: 16px; }
+#plateau:not(:has(.ligne:not(.vide)))::before {
+  content: "Tes essais apparaîtront ici.";
+  display: block;
+  padding: 16px;
+  border: 2px dashed var(--bord);
+  border-radius: 12px;
+  color: var(--discret);
+  text-align: center;
+}
 .ligne {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 6px 10px;
   background: var(--champ);
+  border: 1px solid var(--bord);
   border-radius: 12px;
 }
 .ligne .num { width: 22px; color: var(--discret); font-size: .85rem; }
 .ligne .pions { display: flex; gap: 6px; flex: 1; flex-wrap: wrap; }
 .ligne .indices { display: flex; gap: 6px; }
+.ligne:not(.vide) { animation: apparition .25s ease-out; }
+@keyframes apparition { from { opacity: 0; transform: translateY(-4px); } }
+
+/* Lignes vides du plateau : affichées seulement sur ordinateur */
+.ligne.vide { display: none; background: transparent; border-style: dashed; }
+.trou {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--champ);
+  box-shadow: inset 0 2px 4px rgba(40, 60, 120, .12);
+}
+
+/* Raccourcis clavier : seulement avec une souris */
+.raccourcis { display: none; flex-wrap: wrap; justify-content: center; gap: 6px 14px; margin: 14px 0 0; color: var(--discret); font-size: .85rem; }
+.raccourcis span { white-space: nowrap; }
+@media (hover: hover) and (pointer: fine) {
+  .raccourcis { display: flex; }
+}
 
 /* Emplacements de saisie */
 .slots { display: flex; gap: 8px; justify-content: center; margin: 12px 0; }
@@ -135,19 +241,21 @@ button.petit { padding: 7px 12px; font-size: .9rem; }
   width: 46px; height: 46px;
   padding: 0;
   border-radius: 50%;
-  border: 2px dashed var(--bord);
+  border: 2px dashed #b3bddb;
   background: var(--champ);
+  color: var(--texte);
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
-.slot.plein { border-style: solid; border-color: transparent; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.55); }
+.slot:hover { background: #fff; }
+.slot.plein { border-style: solid; border-color: transparent; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.45); }
 .slot.plein.sombre { color: #222; text-shadow: none; }
 .slots.lecture .pion { width: 46px; height: 46px; }
 
 .palette { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 14px 0; }
 .palette button.pion { padding: 0; width: 44px; height: 44px; }
-.palette button.pion:hover { transform: translateY(-2px); }
+.palette button.pion:hover { transform: translateY(-2px); background-color: inherit; }
 
 .actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
 
@@ -159,7 +267,7 @@ button.petit { padding: 7px 12px; font-size: .9rem; }
 #fin { margin-top: 12px; text-align: center; }
 #texte-fin { font-size: 1.15rem; font-weight: 600; }
 
-/* Scores */
+/* ----- Scores ----- */
 .bloc-score { margin-bottom: 14px; }
 .bloc-score h3 { margin: 0 0 6px; font-size: .95rem; color: var(--accent); }
 .bloc-score ol { margin: 0; padding-left: 22px; line-height: 1.7; }
@@ -168,8 +276,98 @@ button.petit { padding: 7px 12px; font-size: .9rem; }
 [hidden] { display: none !important; }
 
 @media (max-width: 420px) {
-  .carte { padding: 20px 14px; }
+  .carte { padding: 18px 14px; }
   .pion { width: 32px; height: 32px; }
   .slot { width: 40px; height: 40px; }
   .slots.lecture .pion { width: 40px; height: 40px; }
+  .logo { width: 48px; height: 48px; }
+}
+
+/* =====================================================
+   ORDINATEUR : écrans de 900px et plus
+   ===================================================== */
+@media (min-width: 900px) {
+  body { padding: 40px 32px; align-items: center; }
+
+  .carte {
+    max-width: 1040px;
+    padding: 36px 40px;
+  }
+
+  .entete { margin-bottom: 28px; gap: 18px; }
+  .logo { width: 68px; height: 68px; }
+  h1 { font-size: 2rem; }
+  h1 span { font-size: 1.15rem; }
+  .slogan { font-size: 1rem; }
+
+  /* Menu : formulaire à gauche, règles à droite, modes de jeu en dessous */
+  .menu-grille {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    grid-template-areas:
+      "form  regles"
+      "modes modes";
+    gap: 28px 40px;
+    align-items: start;
+  }
+  .menu-form { grid-area: form; }
+  .menu-regles { grid-area: regles; margin-top: 12px; padding: 22px 24px; align-self: stretch; }
+  .menu-regles h2 { font-size: 1.15rem; }
+  .menu-modes {
+    grid-area: modes;
+    margin-top: 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--bord);
+  }
+  .modes { grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  button.mode { padding: 18px 20px; align-content: start; min-height: 92px; }
+  button.mode:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(59, 91, 219, .25); }
+  .btn-scores { width: auto; margin-top: 14px; }
+
+  /* Plateau complet avec les lignes à venir */
+  .legende { margin-bottom: 12px; }
+  .ligne.vide { display: flex; }
+  .ligne.vide .num { opacity: .6; }
+  .ligne.prochaine { border-color: var(--accent); border-style: solid; background: var(--accent-pale); }
+  .ligne.prochaine .num { opacity: 1; color: var(--accent); font-weight: 700; }
+
+  /* Jeu : historique à gauche, saisie à droite (reste visible au défilement) */
+  .jeu-grille {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 400px;
+    gap: 36px;
+    align-items: start;
+  }
+  .col-saisie {
+    position: sticky;
+    top: 24px;
+    padding: 20px;
+    background: var(--panneau);
+    border-radius: 16px;
+  }
+  #plateau { gap: 8px; }
+  .ligne { padding: 5px 14px; gap: 14px; }
+  .ligne .pion, .trou { width: 40px; height: 40px; }
+
+  .pion { width: 44px; height: 44px; font-size: 1.05rem; }
+  .slot { width: 52px; height: 52px; }
+  .slots.lecture .pion { width: 52px; height: 52px; }
+  .palette button.pion { width: 50px; height: 50px; }
+  .badge { min-width: 30px; height: 30px; font-size: .95rem; }
+
+  /* Scores : un niveau par colonne */
+  #liste-scores { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 12px 0 20px; }
+  .bloc-score { margin: 0; padding: 18px 20px; background: var(--panneau); border-radius: 12px; }
+}
+
+/* Très grands écrans */
+@media (min-width: 1400px) {
+  .carte { max-width: 1160px; }
+  .jeu-grille { grid-template-columns: minmax(0, 1fr) 440px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  button { transition: none; }
+  button.mode:hover { transform: none; }
+  .ligne:not(.vide) { animation: none; }
 }

@@ -187,8 +187,43 @@ function ajouterLigne(code, bien, mal) {
     `<span class="badge mal" title="mal placés">${mal}</span>`;
   ligne.appendChild(indices);
 
-  $("plateau").appendChild(ligne);
+  // On remplace la première ligne vide du plateau (sinon on ajoute à la fin)
+  const vide = $("plateau").querySelector(".ligne.vide");
+  if (vide) vide.replaceWith(ligne);
+  else $("plateau").appendChild(ligne);
+  marquerProchaineLigne();
   ligne.scrollIntoView({ block: "nearest", behavior: "smooth" });
+}
+
+// Plateau complet : une ligne vide par essai (visible sur ordinateur)
+function preparerPlateau() {
+  const plateau = $("plateau");
+  plateau.innerHTML = "";
+  for (let i = 1; i <= etat.niveau.essais; i++) {
+    const ligne = document.createElement("div");
+    ligne.className = "ligne vide";
+    ligne.setAttribute("aria-hidden", "true");
+    const num = document.createElement("span");
+    num.className = "num";
+    num.textContent = i;
+    const trous = document.createElement("div");
+    trous.className = "pions";
+    for (let j = 0; j < etat.niveau.longueur; j++) {
+      const trou = document.createElement("span");
+      trou.className = "trou";
+      trous.appendChild(trou);
+    }
+    ligne.append(num, trous);
+    plateau.appendChild(ligne);
+  }
+  marquerProchaineLigne();
+}
+
+function marquerProchaineLigne() {
+  const plateau = $("plateau");
+  plateau.querySelectorAll(".prochaine").forEach(l => l.classList.remove("prochaine"));
+  const suivante = plateau.querySelector(".ligne.vide");
+  if (suivante && etat.phase !== "fini") suivante.classList.add("prochaine");
 }
 
 function majCompteur() {
@@ -227,6 +262,7 @@ function construirePalette() {
     bouton.addEventListener("click", () => poserPion(c));
     palette.appendChild(bouton);
   }
+  $("touche-max").textContent = etat.niveau.couleurs;
 }
 
 function dessinerEmplacements() {
@@ -280,7 +316,7 @@ function lancerPartie(mode) {
   etat.tentative = 0;
   etat.secret = [];
 
-  $("plateau").innerHTML = "";
+  preparerPlateau();
   $("fin").hidden = true;
   afficherMessage("");
   afficherEcran("jeu");
@@ -323,6 +359,7 @@ function terminer(texte, secretAAfficher) {
   conteneur.innerHTML = "";
   if (secretAAfficher) afficherCode(conteneur, secretAAfficher);
   $("fin").hidden = false;
+  marquerProchaineLigne();
   $("compteur").textContent = "Partie terminée";
   $("fin").scrollIntoView({ block: "nearest", behavior: "smooth" });
 }
@@ -430,7 +467,7 @@ $("btn-valider").addEventListener("click", valider);
 $("btn-effacer").addEventListener("click", viderSaisie);
 $("btn-envoyer").addEventListener("click", envoyerIndices);
 
-// Clavier : 1-8 pose un pion, Retour arrière retire, Entrée valide
+// Clavier : 1-8 pose un pion, Retour arrière retire, Échap efface, Entrée valide
 document.addEventListener("keydown", e => {
   if (ecrans.jeu.hidden) return;
   if (etat.phase !== "devine" && etat.phase !== "creation") return;
@@ -440,6 +477,8 @@ document.addEventListener("keydown", e => {
     for (let i = etat.essai.length - 1; i >= 0; i--) {
       if (etat.essai[i] !== null) { retirerPion(i); break; }
     }
+  } else if (e.key === "Escape") {
+    viderSaisie();
   } else if (e.key === "Enter") {
     e.preventDefault();
     valider();
