@@ -11,7 +11,8 @@ Trouve la combinaison secrète de pions colorés en un minimum d'essais. Après 
 - **L'ordinateur devine** : tu penses à un code, l'ordinateur propose et tu lui donnes les indices.
 - **3 niveaux** : Facile (6 couleurs, 4 pions, 12 essais), Normal (6 couleurs, 4 pions, 10 essais), Difficile (8 couleurs, 5 pions, 10 essais).
 - **Meilleurs scores** : les 5 meilleurs par niveau, sauvegardés dans le navigateur (`localStorage`).
-- **Clavier** : touches 1 à 8 pour poser un pion, Retour arrière pour en retirer un, Entrée pour valider.
+- **Clavier** : touches 1 à 8 pour poser un pion, Retour arrière pour en retirer un, Échap pour tout effacer, Entrée pour valider.
+- **Adapté mobile et ordinateur** : sur PC (900 px et plus), le menu et le jeu passent sur deux colonnes, le plateau affiche toutes les lignes d'essais (la ligne en cours est surlignée) et les raccourcis clavier sont rappelés sous la palette.
 
 ## Règles
 
@@ -34,6 +35,7 @@ mastermind/
 ├── index.html   # structure de la page (menu, jeu, scores)
 ├── style.css    # apparence
 ├── script.js    # logique du jeu
+├── logo.svg     # logo (aussi utilisé comme favicon)
 └── README.md
 ```
 

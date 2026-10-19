@@ -3,42 +3,69 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f3f6fc">
   <title>Mastermind - Le défi</title>
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main class="carte">
-    <h1>MASTERMIND <span>le défi</span></h1>
+    <header class="entete">
+      <img class="logo" src="logo.svg" alt="Logo Mastermind : réseau de neurones" width="56" height="56">
+      <div>
+        <h1>MASTERMIND <span>le défi</span></h1>
+        <p class="slogan">Jeu de logique : casse le code secret</p>
+      </div>
+    </header>
 
     <!-- ===== MENU ===== -->
     <section id="ecran-menu">
-      <label for="prenom1">Ton prénom</label>
-      <input type="text" id="prenom1" maxlength="20" placeholder="Joueur 1" autocomplete="off">
+      <div class="menu-grille">
+        <div class="menu-form">
+          <label for="prenom1">Ton prénom</label>
+          <input type="text" id="prenom1" maxlength="20" placeholder="Joueur 1" autocomplete="off">
 
-      <label for="prenom2">Prénom du 2e joueur <small>(mode 2 joueurs)</small></label>
-      <input type="text" id="prenom2" maxlength="20" placeholder="Joueur 2" autocomplete="off">
+          <label for="prenom2">Prénom du 2e joueur <small>(mode 2 joueurs)</small></label>
+          <input type="text" id="prenom2" maxlength="20" placeholder="Joueur 2" autocomplete="off">
 
-      <fieldset>
-        <legend>Niveau</legend>
-        <label class="radio"><input type="radio" name="niveau" value="facile"> Facile <small>6 couleurs, 4 pions, 12 essais</small></label>
-        <label class="radio"><input type="radio" name="niveau" value="normal" checked> Normal <small>6 couleurs, 4 pions, 10 essais</small></label>
-        <label class="radio"><input type="radio" name="niveau" value="difficile"> Difficile <small>8 couleurs, 5 pions, 10 essais</small></label>
-      </fieldset>
+          <fieldset>
+            <legend>Niveau</legend>
+            <label class="radio"><input type="radio" name="niveau" value="facile"> Facile <small>6 couleurs, 4 pions, 12 essais</small></label>
+            <label class="radio"><input type="radio" name="niveau" value="normal" checked> Normal <small>6 couleurs, 4 pions, 10 essais</small></label>
+            <label class="radio"><input type="radio" name="niveau" value="difficile"> Difficile <small>8 couleurs, 5 pions, 10 essais</small></label>
+          </fieldset>
 
-      <div class="modes">
-        <button type="button" data-mode="solo">Jouer seul</button>
-        <button type="button" data-mode="deux">Mode 2 joueurs</button>
-        <button type="button" data-mode="ordi">L'ordinateur devine mon code</button>
-        <button type="button" id="btn-scores" class="secondaire">Meilleurs scores</button>
+        </div>
+
+        <div class="menu-modes">
+          <h2 class="titre-modes">Choisis un mode de jeu</h2>
+          <div class="modes">
+            <button type="button" class="mode" data-mode="solo">
+              <strong>Jouer seul</strong>
+              <span>Le code secret est tiré au hasard.</span>
+            </button>
+            <button type="button" class="mode" data-mode="deux">
+              <strong>Mode 2 joueurs</strong>
+              <span>Un joueur crée le code, l'autre le devine.</span>
+            </button>
+            <button type="button" class="mode" data-mode="ordi">
+              <strong>L'ordinateur devine</strong>
+              <span>Tu penses à un code, l'ordinateur le cherche.</span>
+            </button>
+          </div>
+          <button type="button" id="btn-scores" class="secondaire btn-scores">Meilleurs scores</button>
+        </div>
+
+        <aside class="menu-regles">
+          <h2>Les règles</h2>
+          <ul class="regles">
+            <li>Trouve la combinaison secrète de pions colorés. Une couleur peut apparaître plusieurs fois.</li>
+            <li>Après chaque essai : <span class="badge bien">n</span> pions de la bonne couleur <strong>bien placés</strong>
+                et <span class="badge mal">n</span> pions de la bonne couleur <strong>mal placés</strong>.</li>
+            <li>Au clavier : touches 1 à 8 pour poser un pion, Retour arrière pour en retirer un, Échap pour tout effacer, Entrée pour valider.</li>
+          </ul>
+        </aside>
       </div>
-
-      <h2>Les règles</h2>
-      <ul class="regles">
-        <li>Trouve la combinaison secrète de pions colorés. Une couleur peut apparaître plusieurs fois.</li>
-        <li>Après chaque essai : <span class="badge bien">n</span> pions de la bonne couleur <strong>bien placés</strong>
-            et <span class="badge mal">n</span> pions de la bonne couleur <strong>mal placés</strong>.</li>
-        <li>Au clavier : touches 1 à 8 pour poser un pion, Retour arrière pour en retirer un, Entrée pour valider.</li>
-      </ul>
     </section>
 
     <!-- ===== JEU ===== -->
@@ -49,42 +76,58 @@
       </div>
       <p id="consigne"></p>
 
-      <div id="plateau" aria-live="polite"></div>
-
-      <!-- Saisie d'un code (solo, 2 joueurs) -->
-      <div id="zone-saisie">
-        <div id="slots" class="slots"></div>
-        <div id="palette" class="palette"></div>
-        <div class="actions">
-          <button type="button" id="btn-effacer" class="secondaire">Effacer</button>
-          <button type="button" id="btn-valider">Valider</button>
+      <div class="jeu-grille">
+        <div class="col-plateau">
+          <p class="legende">
+            <span><span class="badge bien">n</span> bien placés</span>
+            <span><span class="badge mal">n</span> mal placés</span>
+          </p>
+          <div id="plateau" aria-live="polite"></div>
         </div>
-      </div>
 
-      <!-- Retour d'indices (l'ordinateur devine) -->
-      <div id="zone-retour" hidden>
-        <div id="slots-ordi" class="slots"></div>
-        <div class="retour">
-          <label>Bien placés
-            <input type="number" id="in-bien" min="0" value="0">
-          </label>
-          <label>Mal placés
-            <input type="number" id="in-mal" min="0" value="0">
-          </label>
-        </div>
-        <div class="actions">
-          <button type="button" id="btn-envoyer">Envoyer les indices</button>
-        </div>
-      </div>
+        <div class="col-saisie">
+          <!-- Saisie d'un code (solo, 2 joueurs) -->
+          <div id="zone-saisie">
+            <div id="slots" class="slots"></div>
+            <div id="palette" class="palette"></div>
+            <div class="actions">
+              <button type="button" id="btn-effacer" class="secondaire">Effacer</button>
+              <button type="button" id="btn-valider">Valider</button>
+            </div>
+            <p class="raccourcis">
+              <span><kbd>1</kbd>–<kbd id="touche-max">6</kbd> poser</span>
+              <span><kbd>⌫</kbd> retirer</span>
+              <span><kbd>Échap</kbd> effacer</span>
+              <span><kbd>Entrée</kbd> valider</span>
+            </p>
+          </div>
 
-      <p id="message" role="alert"></p>
+          <!-- Retour d'indices (l'ordinateur devine) -->
+          <div id="zone-retour" hidden>
+            <div id="slots-ordi" class="slots"></div>
+            <div class="retour">
+              <label>Bien placés
+                <input type="number" id="in-bien" min="0" value="0">
+              </label>
+              <label>Mal placés
+                <input type="number" id="in-mal" min="0" value="0">
+              </label>
+            </div>
+            <div class="actions">
+              <button type="button" id="btn-envoyer">Envoyer les indices</button>
+            </div>
+          </div>
 
-      <div id="fin" hidden>
-        <p id="texte-fin"></p>
-        <div id="secret-fin" class="slots"></div>
-        <div class="actions">
-          <button type="button" id="btn-rejouer">Rejouer</button>
-          <button type="button" id="btn-menu-fin" class="secondaire">Menu</button>
+          <p id="message" role="alert"></p>
+
+          <div id="fin" hidden>
+            <p id="texte-fin"></p>
+            <div id="secret-fin" class="slots"></div>
+            <div class="actions">
+              <button type="button" id="btn-rejouer">Rejouer</button>
+              <button type="button" id="btn-menu-fin" class="secondaire">Menu</button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
